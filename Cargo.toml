@@ -1,9 +1,15 @@
 [package]
 name = "deflestream64"
-version = "0.1.0"
+version = "0.1.0-alpha"
 authors = ["Maxwell Beck <max@ryt.one>"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license = "MIT"
 
 [dependencies]
+anyhow = "1"
+argh = "0.1"
+byteorder = "1"
+mktemp = "0.4"
+
+[build-dependencies]
+cc = "1"
