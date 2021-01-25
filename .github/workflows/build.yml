@@ -22,7 +22,9 @@ jobs:
           sudo apt-get install cc65
       - name: Install cc65 [macOS]
         if: matrix.os == 'macos-latest'
-        run: brew install cc65
+        run: |
+          export HOMEBREW_NO_INSTALL_CLEANUP=1
+          brew install cc65
       - name: Install cc65 [Windows]
         if: matrix.os == 'windows-latest'
         run: |
@@ -46,7 +48,7 @@ jobs:
         if: matrix.os == 'macos-latest'
         run: |
           echo "CXX=clang++" >> $GITHUB_ENV
-          echo "CXXFLAGS=\"-std=c++11\"" >> $GITHUB_ENV
+          echo "CXXFLAGS=-std=c++11" >> $GITHUB_ENV
       - run: cargo build --release
       - name: Upload Artifact [Non-Windows]
         if: matrix.os != 'windows-latest'
