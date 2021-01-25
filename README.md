@@ -13,7 +13,7 @@ Command line: `deflestream64 <vgm file>`
 
 `cargo build --release`
 
-Requires the Rust toolchain and a C/C++ compiler
+Requires the Rust toolchain, a C/C++ compiler, and cc65.
 
 ## Roadmap
 
