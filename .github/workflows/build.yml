@@ -41,7 +41,12 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             target
-          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}\
+      - name: Set up CXX [macOS]
+        if: matrix.os == 'macos-latest'
+        run: |
+          echo "CXX=clang++" >> $GITHUB_ENV
+          echo "CXXFLAGS=\"-std=c++11\"" >> $GITHUB_ENV
       - run: cargo build --release
       - name: Upload Artifact [Non-Windows]
         if: matrix.os != 'windows-latest'
