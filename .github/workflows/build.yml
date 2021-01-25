@@ -27,7 +27,9 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           curl -L "https://sourceforge.net/projects/cc65/files/cc65-snapshot-win32.zip/download" > cc65.zip
-          unzip cc65.zip
+          unzip cc65.zip -d /cc65
+          echo "/cc65/bin" >> $GITHUB_PATH
+          echo "CC65_HOME=/cc65" >> $GITHUB_ENV
         shell: bash
           
       - uses: actions-rs/toolchain@v1
