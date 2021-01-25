@@ -223,8 +223,8 @@ fn main() {
     // Parse command line arguments
     let args: Args = argh::from_env();
 
-    let tempdir = mktemp::Temp::new_dir().expect("Failed to create temp directory");
-    if let Err(e) = run(args, tempdir.to_path_buf()) {
+    let tempdir = tempfile::tempdir().expect("Failed to create temp directory");
+    if let Err(e) = run(args, tempdir.path().to_owned()) {
         eprintln!("{}", e);
     }
 }

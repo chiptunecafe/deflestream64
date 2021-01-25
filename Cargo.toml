@@ -9,7 +9,7 @@ license = "MIT"
 anyhow = "1"
 argh = "0.1"
 byteorder = "1"
-mktemp = "0.4"
+tempfile = "3"
 
 [build-dependencies]
 cc = "1"
