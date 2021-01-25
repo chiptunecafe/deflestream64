@@ -55,25 +55,46 @@ clear_loop:
     inx
     bne clear_loop
 
-;     ldx #$00                        ; write text to screen
-; copy_line0:
-;     lda line0,x
-;     beq copy_line0_done
-;     sta $0400+40,x
-;     inx
-;     jmp copy_line0
-
+    ldx #$00                        ; write text to screen
+copy_line0:
+    lda line0,x
+    beq copy_line0_done
+    sta $0400+40,x
+    inx
+    jmp copy_line0
 copy_line0_done:
+    ldx #$00
+copy_line1:
+    lda line1,x
+    beq copy_line1_done
+    sta $0400+80,x
+    inx
+    jmp copy_line1
+copy_line1_done:
+    ldx #$00
+copy_line2:
+    lda line2,x
+    beq copy_line2_done
+    sta $0400+120,x
+    inx
+    jmp copy_line2
+
+copy_line2_done:
     inc $d020                       ; load first two banks
     ldx #<bank0
     ldy #>bank0
     jsr $180
-    bcs error
+    bcc lb0_ok
+    jmp error
 
+lb0_ok:
     ldx #<nextfile
     ldy #>nextfile
     jsr $180
-    bcs error
+    bcc lb1_ok
+    jmp error
+
+lb1_ok:
     dec $d020
 
     lda #$01                        ; store greatest loaded bank
@@ -94,7 +115,7 @@ copy_line0_done:
 
     lda #$00                        ; store pointer to vgm data
     sta $20
-    lda #$30
+    lda #$10
     sta $21
 
     asl $d019                       ; ack pending vic interrupts
@@ -152,11 +173,11 @@ irq:
     dec $d021
 
     lda $21                         ; loop to previous bank if needed
-    cmp #$b0
+    cmp #$90
     bcc no_loop
     lda #$00
     sta $20
-    lda #$30
+    lda #$10
     sta $21
 no_loop:
     ldy #$00                        ; vgm playback routine
@@ -205,15 +226,21 @@ bank0:
 nextfile:
     .byte 0
 
-; line0: 
-;     scrcode " deflestream 0.1.0-alpha"
+line0: 
+    .text c64screen " deflestream64 0.1.0"
+    .byte 0
+line1: 
+    .text c64screen " code by rytone"
+    .byte 0
+line2: 
+    .text c64screen " loader by krill"
+    .byte 0
 
 segment "Loader"
 .org $1000
 install:
     .incbin "./loader-install.bin"
 
-.align $100
 resident:
     .incbin "./loader-resident.bin"
 

@@ -113,7 +113,7 @@ fn run(args: Args, tempdir: PathBuf) -> Result<()> {
         file.write_all(data)?;
     }
 
-    println!(">>> Assembling player");
+    println!(">>> Assembling and packing player");
     let mut player_out = tempdir.clone();
     player_out.push("player.prg");
 
@@ -130,6 +130,23 @@ fn run(args: Args, tempdir: PathBuf) -> Result<()> {
         x65_main(x65_args.len() as i32, x65_args.as_ptr());
     }
 
+    let mut player_packed_out = tempdir.clone();
+    player_packed_out.push("player.prg");
+
+    unsafe {
+        let args = vec![
+            CString::new("lz")?,
+            CString::new("--sfx")?,
+            CString::new("0x0810")?,
+            CString::new("-o")?,
+            CString::new(player_packed_out.to_string_lossy().as_ref())?,
+            CString::new(player_out.to_string_lossy().as_ref())?,
+        ];
+
+        let lz_args: Vec<_> = args.iter().map(|a| a.as_ptr()).collect();
+        lz_main(lz_args.len() as i32, lz_args.as_ptr());
+    }
+
     // Set up now so we can push in arguments as we build banks
     let mut cc1541_args = vec![
         CString::new("cc1541")?,
@@ -138,7 +155,7 @@ fn run(args: Args, tempdir: PathBuf) -> Result<()> {
         CString::new("-f")?,
         CString::new("player.prg")?,
         CString::new("-w")?,
-        CString::new(player_out.to_string_lossy().as_ref())?,
+        CString::new(player_packed_out.to_string_lossy().as_ref())?,
     ];
 
     // 128 commands (256 bytes) per page, 64 pages per bank
@@ -152,9 +169,9 @@ fn run(args: Args, tempdir: PathBuf) -> Result<()> {
 
             // Write PRG load address (hard coded)
             if i % 2 == 0 {
-                file.write_all(&[0x00, 0x30])?;
+                file.write_all(&[0x00, 0x10])?;
             } else {
-                file.write_all(&[0x00, 0x70])?;
+                file.write_all(&[0x00, 0x50])?;
             }
 
             for command in chunk {
