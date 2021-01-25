@@ -26,7 +26,7 @@ jobs:
       - name: Install cc65 [Windows]
         if: matrix.os == 'windows-latest'
         run: |
-          curl "https://sourceforge.net/projects/cc65/files/cc65-snapshot-win32.zip/download" > cc65.zip
+          curl -L "https://sourceforge.net/projects/cc65/files/cc65-snapshot-win32.zip/download" > cc65.zip
           unzip cc65.zip
         shell: bash
           
@@ -45,11 +45,11 @@ jobs:
         if: matrix.os != 'windows-latest'
         uses: actions/upload-artifact@v1
         with:
-          name: rawrscope-${{ matrix.os }}-${{ matrix.arch }}
+          name: deflestream64-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/deflestream64
       - name: Upload Artifact [Windows]
         if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v1
         with:
-          name: rawrscope-${{ matrix.os }}-${{ matrix.arch }}
+          name: deflestream64-${{ matrix.os }}
           path: target/${{ matrix.target }}/release/deflestream64.exe
