@@ -1,6 +1,6 @@
 [package]
 name = "deflestream64"
-version = "0.1.0-alpha"
+version = "0.1.0"
 authors = ["Maxwell Beck <max@ryt.one>"]
 edition = "2018"
 license = "MIT"

@@ -17,11 +17,11 @@ Requires the Rust toolchain, a C/C++ compiler, and cc65.
 
 ## Roadmap
 
-0.1.0: More efficient memory layout, official binaries
-
-0.2.0: Customizable bank sizes and base address, read GD3 metadata
+0.2.0: Customizable bank sizes and base address, read GD3 metadata, basic NTSC support
 
 0.3.0: Prettier player, playerless export
+
+0.4.0: PAL <=> NTSC conversion
 
 ## Credits
 
